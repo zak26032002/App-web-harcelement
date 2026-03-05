@@ -1,11 +1,11 @@
-<script setup lang="ts"></script>
-
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <nav v-if="$route.path !== '/'"> <RouterLink to="/dashboard">Tableau de bord</RouterLink>
+  </nav>
+
+  <RouterView />
 </template>
 
-<style scoped></style>
+<style>
+/* Style global pour éviter les marges blanches */
+body { margin: 0; padding: 0; }
+</style>
