@@ -191,3 +191,70 @@ td {
 .badge-new { background: #dcfce7; color: #166534; }
 .badge-urgent { background: #fee2e2; color: #991b1b; }
 
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 100px); /* Ajusté pour centrer même avec le header */
+}
+
+.login-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #e2e8f0;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+input {
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  font-size: 1rem;
+}
+
+input:focus {
+  outline: 2px solid var(--primary);
+  border-color: transparent;
+}
+
+.btn-block {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.error-msg {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.login-footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
