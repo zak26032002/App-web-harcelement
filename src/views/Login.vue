@@ -2,23 +2,61 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+// Initialisation des outils
 const router = useRouter()
 
-// Variables pour le formulaire
+// Variables réactives pour le formulaire
 const email = ref('')
 const password = ref('')
 const error = ref(false)
+const errorMessage = ref('')
 
-const handleLogin = () => {
-  // Simulation d'authentification simple pour le moment
-  if (email.value === 'admin@entreprise.fr' && password.value === 'password') {
-    error.value = false
-    // On redirige vers le dashboard
-    router.push('/')
-  } else {
-    error.value = true
+/**
+ * Fonction de connexion
+ */
+const handleLogin = async () => {
+  console.log("1. Tentative d'envoi vers le backend...");
+  error.value = false; // Réinitialise l'erreur à chaque tentative
+
+  try {
+    const response = await fetch('http://localhost:3000/api/auth/login', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify({ 
+        email: email.value, 
+        password: password.value 
+      })
+    });
+
+    console.log("2. Réponse brute reçue, statut :", response.status);
+
+    const data = await response.json();
+    console.log("3. Données JSON reçues :", data);
+
+    if (data.success) {
+      // SUCCÈS
+      console.log("Connexion réussie ! Redirection en cours...");
+      
+      // On stocke les infos utilisateur dans le navigateur
+      localStorage.setItem('user', JSON.stringify(data.user));
+      
+      // Redirection vers le Dashboard (la route '/dashboard')
+      await router.push('/dashboard');
+    } else {
+      // ERREUR IDENTIFIANTS
+      error.value = true;
+      errorMessage.value = data.message || "Identifiants incorrects";
+    }
+
+  } catch (err) {
+    // ERREUR TECHNIQUE (Serveur éteint, etc.)
+    console.error("4. ERREUR CRITIQUE :", err);
+    error.value = true;
+    errorMessage.value = "Impossible de joindre le serveur de base de données.";
   }
-}
+};
 </script>
 
 <template>
@@ -66,5 +104,4 @@ const handleLogin = () => {
 </template>
 
 <style scoped>
-/* Ton futur CSS */
 </style>

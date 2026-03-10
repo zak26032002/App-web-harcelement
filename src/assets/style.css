@@ -27,23 +27,17 @@ body {
   justify-content: space-between;
   align-items: center;
   background-color: var(--white);
-  
-  /* On ajuste ici : top/bottom à 0.5rem et left/right à 3rem */
   padding: 0.5rem 3rem; 
-  
-  /* Optionnel : tu peux enlever la hauteur fixe (height) 
-     pour que le padding gère lui-même la taille du bandeau */
   min-height: 70px; 
-  
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 .page-content {
-  padding: 1.5rem 2.5rem; /* 2rem en haut/bas, 3rem sur les côtés pour aligner avec le header */
-  max-width: 1400px;  /* Optionnel : pour éviter que le dashboard soit trop large sur grand écran */
-  margin: 0 auto;     /* Centre le contenu si tu mets une max-width */
+  padding: 1.5rem 2.5rem; 
+  max-width: 1400px;
+  margin: 0 auto;     
 }
 
 .header-left, .header-right {
@@ -56,11 +50,17 @@ body {
   font-weight: 800;
   color: var(--primary);
   font-size: 1.2rem;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
 }
 
 .top-nav {
   display: flex;
   gap: 1.5rem;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
 }
 
 .nav-link {
@@ -69,6 +69,9 @@ body {
   font-weight: 500;
   font-size: 0.95rem;
   transition: color 0.2s;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
 }
 
 .nav-link:hover, .router-link-active {
@@ -76,21 +79,36 @@ body {
 }
 
 /* 3. Infos Utilisateur & Boutons */
-.user-info {
+.user-profile {
+
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Espace entre les infos et le bouton */
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
   text-align: right;
   line-height: 1.2;
+}
+
+.user-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1a1a1a;
+}
+
+.user-role {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .welcome-msg {
   display: block;
   font-size: 0.9rem;
-}
-
-.user-role {
-  font-size: 0.75rem;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .btn-primary {
@@ -109,12 +127,20 @@ body {
 }
 
 .btn-logout {
-  background: transparent;
-  border: 1px solid #e2e8f0;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 8px 16px;
+  background-color: #4f46e5; 
+  color: #ffffff;           
   cursor: pointer;
-  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+}
+
+.btn-logout:hover {
+  background-color: #6b65e6;
+  color: white;
 }
 
 /* 4. Layout & Cards */

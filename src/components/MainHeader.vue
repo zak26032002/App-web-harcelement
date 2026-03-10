@@ -1,9 +1,36 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
-// Ces données pourraient plus tard venir d'un "Store" (Pinia) après la connexion
-const nomUtilisateur = ref('Jean Dupont')
-const role = ref('Responsable RH')
+const router = useRouter()
+
+// On crée une variable réactive pour stocker l'utilisateur
+// Par défaut, on met des valeurs vides pour éviter les erreurs d'affichage
+const user = ref({
+  nom: 'Invité',
+  role: 'Utilisateur',
+  email: ''
+})
+
+// Cette fonction s'exécute dès que le composant est affiché à l'écran
+onMounted(() => {
+  const storedUser = localStorage.getItem('user')
+  
+  if (storedUser) {
+    // On transforme le texte JSON du localStorage en objet JavaScript
+    user.value = JSON.parse(storedUser)
+    console.log("Utilisateur connecté affiché :", user.value.nom)
+  } else {
+    // Si pas d'utilisateur, on renvoie vers le login par sécurité
+    router.push('/login')
+  }
+})
+
+// Fonction pour se déconnecter
+const handleLogout = () => {
+  localStorage.removeItem('user') // On vide la session
+  router.push('/login')           // On repart au login
+}
 </script>
 
 <template>
@@ -13,15 +40,17 @@ const role = ref('Responsable RH')
       <nav class="top-nav">
         <RouterLink to="/dashboard" class="nav-link">Tableau de bord</RouterLink>
         <RouterLink to="/reports" class="nav-link">Signalements</RouterLink>
-        <RouterLink to="/login" class="nav-link">Déconnexion</RouterLink>
+        <button @click="handleLogout" class="btn-logout">
+        Déconnexion
+      </button>
       </nav>
     </div>
     
 
-    <div class="header-right">
-      <div class="user-info">
-        <span class="welcome-msg">Bonjour, <strong>{{ nomUtilisateur }}</strong></span>
-        <span class="user-role">{{ role }}</span>
+    <div class="user-profile">
+      <div class="user-details">
+        <span class="user-name">{{ user.nom }}</span>
+        <span class="user-role">{{ user.role }}</span>
       </div>
     </div>
   </header>
