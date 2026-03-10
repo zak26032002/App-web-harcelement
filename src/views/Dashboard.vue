@@ -25,9 +25,8 @@ const casAnciens = computed(() => {
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .slice(0, 3)
 })
-
+// Bandeau de connexion
 </script>
-
 <template>
   <div class="dashboard-container">
     <header>

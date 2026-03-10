@@ -16,7 +16,7 @@ const role = ref('Responsable RH')
         <RouterLink to="/login" class="nav-link">Déconnexion</RouterLink>
       </nav>
     </div>
-    <img src="../assets/low-cortisol-low-cortisol-meme.gif" alt="Logo" class="header-logo" />
+    
 
     <div class="header-right">
       <div class="user-info">
