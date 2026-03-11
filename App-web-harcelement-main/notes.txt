@@ -1,0 +1,2 @@
+npm config set https-proxy http://10.129.254.254:3128
+npm config set proxy http://10.129.254.254:3128
