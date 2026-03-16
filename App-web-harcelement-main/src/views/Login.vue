@@ -12,11 +12,12 @@ const error = ref(false)
 const errorMessage = ref('')
 
 /**
- * Fonction de connexion
+ * Fonction de connexion avec gestion des rôles
  */
 const handleLogin = async () => {
   console.log("1. Tentative d'envoi vers le backend...");
-  error.value = false; // Réinitialise l'erreur à chaque tentative
+  error.value = false;
+  errorMessage.value = '';
 
   try {
     const response = await fetch('http://localhost:3000/api/auth/login', {
@@ -36,25 +37,36 @@ const handleLogin = async () => {
     console.log("3. Données JSON reçues :", data);
 
     if (data.success) {
-      // SUCCÈS
-      console.log("Connexion réussie ! Redirection en cours...");
+      console.log("Connexion réussie ! Analyse du rôle...");
       
-      // On stocke les infos utilisateur dans le navigateur
+      // Stockage sécurisé du token et des infos utilisateur 
+      localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       
-      // Redirection vers le Dashboard (la route '/dashboard')
-      await router.push('/dashboard');
+      // LOGIQUE DE REDIRECTION PAR RÔLE [cite: 11-16]
+      const role = data.user.role; 
+
+      if (role === 'RH' || role === 'admin' || role === 'Juriste') {
+        // Les RH et Juristes vont vers le tableau de bord complet 
+        console.log("Accès Portail RH/Juriste accordé.");
+        await router.push('/dashboard');
+      } else {
+        // Les salariés vont vers leur espace personnel (Dépôt/Suivi) 
+        console.log("Accès Espace Salarié accordé.");
+        await router.push('/mon-espace');
+      }
+
     } else {
-      // ERREUR IDENTIFIANTS
+      // Cas : Identifiants incorrects
       error.value = true;
-      errorMessage.value = data.message || "Identifiants incorrects";
+      errorMessage.value = data.message || "Identifiants incorrects.";
     }
 
   } catch (err) {
-    // ERREUR TECHNIQUE (Serveur éteint, etc.)
+    // Cas : Erreur technique (serveur ou réseau)
     console.error("4. ERREUR CRITIQUE :", err);
     error.value = true;
-    errorMessage.value = "Impossible de joindre le serveur de base de données.";
+    errorMessage.value = "Serveur indisponible. Vérifiez votre connexion.";
   }
 };
 </script>

@@ -18,7 +18,13 @@ const router = createRouter({
       path: '/signalement/:id', 
       name: 'details',
       component: () => import('../views/SignalementAction.vue')
-      }
+      },
+      
+    {
+      path: '/mon-espace',
+      name: 'monEspace',
+      component: () => import('../views/monEspace.vue')
+    }
   ]
 })
 export default router
