@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import MainHeader from '@/components/MainHeader.vue'
+import Footer from '@/components/Footer.vue'
 import { ref, onMounted } from 'vue'
 
 const user = JSON.parse(localStorage.getItem('user') || '{}')
@@ -30,7 +31,7 @@ const handleFileChange = (event: any) => {
   selectedFile.value = event.target.files[0]
 }
 
-// Fonction unique d'envoi utilisant FormData [cite: 25, 41]
+// Fonction unique d'envoi utilisant FormData 
 const handleFormSubmit = async () => {
   if (!form.value.description) return alert("Veuillez remplir la description.");
   
@@ -39,7 +40,7 @@ const handleFormSubmit = async () => {
   formData.append('type', form.value.type)
   formData.append('description', form.value.description)
   formData.append('userId', user.id)
-  formData.append('isAnonymous', String(form.value.isAnonymous)) // [cite: 45, 59]
+  formData.append('isAnonymous', String(form.value.isAnonymous)) // 
 
   if (selectedFile.value) {
     formData.append('file', selectedFile.value) // Envoi de la pièce jointe 
@@ -48,14 +49,14 @@ const handleFormSubmit = async () => {
   try {
     const response = await fetch('http://localhost:3000/api/reports', {
       method: 'POST',
-      body: formData // Pas de JSON.stringify ici !
+      body: formData 
     })
 
     if (response.ok) {
-      alert("Signalement enregistré ! Un code de suivi a été généré.") // [cite: 42, 46]
+      alert("Signalement enregistré ! Un code de suivi a été généré.") // 
       form.value.description = ''
       selectedFile.value = null
-      await fetchMyReports() // Actualisation de la liste [cite: 21]
+      await fetchMyReports() // Actualisation de la liste ]
     } else {
       alert("Erreur lors de l'envoi.")
     }
@@ -65,6 +66,17 @@ const handleFormSubmit = async () => {
     loading.value = false
   }
 }
+
+const formatStatusLabel = (status: string) => {
+  const labels: Record<string, string> = {
+    'OUVERT': 'Ouvert',
+    'EN_COURS': 'En cours',
+    'EN_ATTENTE_INFO': 'En attente',
+    'CLOS_FONDE': 'Clos (Fondé)',
+    'CLOS_NON_FONDE': 'Clos (Non fondé)'
+  };
+  return labels[status] || status;
+};
 
 onMounted(fetchMyReports)
 
@@ -137,8 +149,8 @@ onMounted(fetchMyReports)
               <td><span class="badge" style="background: #f1f5f9; color: #475569;">#{{ report.id }}</span></td>
               <td style="font-weight: 500;">{{ report.type }}</td>
               <td>
-                <span :class="['badge', 'status-' + (report.statut ? report.statut.toLowerCase() : 'ouvert')]">
-                  {{ report.statut || 'OUVERT' }}
+                <span :class="['status-badge', 'status-' + (report.statut ? report.statut.toLowerCase() : 'ouvert')]">
+                  {{ formatStatusLabel(report.statut) }}
                 </span>
               </td>
             </tr>
@@ -152,4 +164,7 @@ onMounted(fetchMyReports)
       </section>
     </div>
   </div>
+  <div class="app-layout">
+      <Footer />
+    </div>
 </template>

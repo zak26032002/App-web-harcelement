@@ -54,3 +54,45 @@ exports.getAllReports = async (req, res) => {
     res.status(500).json({ success: false, message: "Erreur serveur" });
   }
 };
+
+// Récupérer un signalement précis
+exports.getReportById = async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM signalements WHERE id = ?', [req.params.id]);
+    const [comments] = await db.query('SELECT * FROM commentaires WHERE signalement_id = ? ORDER BY date_publication ASC', [req.params.id]);
+    res.json({ success: true, report: rows[0], comments });
+  } catch (error) {
+    res.status(500).json({ success: false });
+  }
+};
+
+// Ajouter un commentaire
+exports.addComment = async (req, res) => {
+  const { auteur_nom, message } = req.body;
+  try {
+    await db.query('INSERT INTO commentaires (signalement_id, auteur_nom, message) VALUES (?, ?, ?)', 
+      [req.params.id, auteur_nom, message]);
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false });
+  }
+};
+
+// Modifier le statut 
+exports.updateStatus = async (req, res) => {
+  const { id } = req.params; // Récupéré de l'URL /api/reports/:id/status
+  const { statut } = req.body; // Récupéré du JSON envoyé
+
+  try {
+    // Seuls les RH et juristes peuvent changer les statuts 
+    await db.query('UPDATE signalements SET statut = ? WHERE id = ?', [statut, id]);
+    
+    // Journalisation de l'action pour le journal d'audit 
+    console.log(`Statut du signalement ${id} mis à jour : ${statut}`);
+    
+    res.json({ success: true, message: "Statut mis à jour en BDD" });
+  } catch (error) {
+    console.error("Erreur SQL updateStatus :", error);
+    res.status(500).json({ success: false, message: "Erreur BDD" });
+  }
+};

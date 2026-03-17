@@ -23,11 +23,18 @@ const upload = multer({
 });
 
 
+
+
 // La route pour récupérer les signalements
 router.get('/', reportController.getAllReports);
 
 // Route modifiée pour accepter un fichier
 router.get('/my-reports', reportController.getMyReports);
 router.post('/', upload.single('file'), reportController.createReport);
+
+// Routes supplémentaires pour les détails, commentaires et mise à jour du statut
+router.get('/:id', reportController.getReportById);
+router.post('/:id/comments', reportController.addComment);
+router.patch('/:id/status', reportController.updateStatus);
 
 module.exports = router; 

@@ -24,7 +24,13 @@ const router = createRouter({
       path: '/mon-espace',
       name: 'monEspace',
       component: () => import('../views/monEspace.vue')
+    },
+    {
+      path: '/report/:id',
+      name: 'report',
+      component: () => import('../views/ReportDetail.vue')
     }
+    
   ]
 })
 export default router

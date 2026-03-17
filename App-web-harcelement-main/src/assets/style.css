@@ -295,10 +295,229 @@ input:focus {
 .description-cell { max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* Styles des badges */
-.badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; }
+.badge { padding: 4px 8px; border-radius: 4px; font-size: 1rem; font-weight: bold; }
 .status-ouvert { background: #e3f2fd; color: #1976d2; }
 .priority-critique { background: #ffebee; color: #c62828; }
 .priority-moyenne { background: #fff3e0; color: #ef6c00; }
 
 .btn-refresh { padding: 8px 16px; background: #4a90e2; color: white; border: none; border-radius: 4px; cursor: pointer; }
 .btn-delete { color: #ff4d4f; border: none; background: none; cursor: pointer; margin-left: 10px; }
+
+.filter-bar { margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+.tracking-code { font-family: monospace; color: var(--primary); font-weight: bold; background: #f1f5f9; padding: 2px 5px; }
+.status-select { padding: 5px; border-radius: 4px; border: 1px solid #ddd; font-weight: 600; cursor: pointer; }
+.link-pj { color: var(--primary); text-decoration: underline; font-size: 1rem; }
+.btn-action { background: #f8fafc; border: 1px solid #e2e8f0; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+.btn-action:hover { background: #f1f5f9; }
+
+/* Styles pour la page de détails du signalement */
+/* 1. Layout Global */
+.detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.header-info { display: flex; align-items: center; gap: 1.5rem; }
+.detail-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+
+/* 2. Boutons et Tags */
+.btn-back { text-decoration: none; color: var(--text-light); font-weight: 600; font-size: 1rem; }
+.tracking-code { color: var(--primary); font-family: monospace; font-size: 1rem; }
+.category-tag { background: #eef2ff; color: var(--primary); padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 1rem; }
+.date-tag { color: var(--text-light); font-size: 0.85rem; }
+
+/* 3. Contenu du Signalement */
+.report-content { padding: 2rem; margin-bottom: 2rem; }
+.description-text { font-size: 1.1rem; line-height: 1.6; color: var(--text-dark); margin: 1.5rem 0; }
+.attachment-box { border-top: 1px solid #e2e8f0; padding-top: 1rem; }
+.attachment-box a { color: var(--primary); font-weight: 600; text-decoration: none; }
+
+/* 4. Messagerie (Chat Style)  */
+.chat-section h3 { margin-bottom: 1rem; color: var(--text-dark); }
+.chat-window { background: #f1f5f9; padding: 1.5rem; border-radius: 12px; max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
+.message-bubble { max-width: 80%; padding: 1rem; border-radius: 12px; font-size: 0.95rem; }
+.message-bubble.sent { align-self: flex-end; background: var(--primary); color: white; border-bottom-right-radius: 2px; }
+.message-bubble.received { align-self: flex-start; background: white; color: var(--text-dark); border-bottom-left-radius: 2px; border: 1px solid #e2e8f0; }
+.message-info { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.5rem; opacity: 0.8; }
+
+.reply-area textarea { width: 100%; margin-top: 1rem; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0; min-height: 80px; resize: none; }
+
+/* 5. Panneau d'Actions [cite: 56] */
+.action-panel h3 { margin-bottom: 1.5rem; font-size: 1rem; }
+.input-field { width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #e2e8f0; font-weight: 600; }
+.info-note { font-size: 0.8rem; color: #6366f1; margin: 1rem 0; font-style: italic; }
+
+.audit-panel h4 { font-size: 0.85rem; text-transform: uppercase; color: var(--text-light); margin-bottom: 1rem; }
+.audit-list { list-style: none; padding: 0; font-size: 0.85rem; color: var(--text-light); }
+.audit-list li { margin-bottom: 0.5rem; }
+
+
+/*Footer */
+/* 1. Base du Footer */
+.main-footer {
+  background-color: var(--white);
+  border-top: 1px solid #e2e8f0;
+  margin-top: 4rem;
+  padding-top: 3rem;
+  color: var(--text-dark);
+}
+
+.footer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 3rem 3rem 3rem;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 4rem;
+}
+
+/* 2. Style des titres de sections */
+h5 {
+  color: var(--text-light);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1.25rem;
+  font-weight: 700;
+}
+
+/* 3. Section Marque */
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.logo-icon { font-size: 1.2rem; }
+.logo-text { font-size: 1.1rem; color: var(--text-dark); }
+.logo-text strong { color: var(--primary); }
+
+.mission-text {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+/* 4. Section Garanties */
+.info-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Espace régulier entre les points */
+}
+
+.info-list li {
+  display: grid;
+  grid-template-columns: 18px 1fr; /* Aligne l'icône/point sur une colonne fixe */
+  align-items: center; /* Centre verticalement le point avec le texte */
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--text-dark);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  justify-self: center; /* Centre le point dans sa colonne de 18px */
+}
+
+/* 5. Section Aide */
+.footer-help p {
+  font-size: 0.85rem;
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+/* 6. Barre du bas (Harmonisée avec ton Header) */
+.footer-bar {
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  padding: 1.25rem 3rem;
+}
+
+.bar-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+
+.meta-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.version-tag {
+  background: #e2e8f0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.divider { color: #cbd5e1; }
+.encryption-tag { color: #10b981; font-weight: 600; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .footer-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-container { grid-template-columns: 1fr; }
+  .bar-content { flex-direction: column; gap: 10px; text-align: center; }
+}
+
+/* Style de base du badge */
+.status-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+  text-align: center;
+  min-width: 100px;
+}
+
+/* OUVERT : Vert émeraude doux */
+.status-ouvert {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+/* EN COURS : Bleu ciel */
+.status-en_cours {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+/* EN ATTENTE : Orange / Jaune */
+.status-en_attente_info {
+  background-color: #fef9c3;
+  color: #854d0e;
+  border: 1px solid #fef08a;
+}
+
+/* CLOS FONDÉ : Rouge / Rose (Alerte confirmée) */
+.status-clos_fonde {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* CLOS NON FONDÉ : Gris ardoise */
+.status-clos_non_fonde {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
