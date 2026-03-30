@@ -39,7 +39,6 @@ const handleLogout = () => {
       <span class="app-logo">LegalTech</span>
       <nav class="top-nav">
         <RouterLink to="/dashboard" class="nav-link">Tableau de bord</RouterLink>
-        <RouterLink to="/reports" class="nav-link">Signalements</RouterLink>
         <button @click="handleLogout" class="btn-logout">
         Déconnexion
       </button>

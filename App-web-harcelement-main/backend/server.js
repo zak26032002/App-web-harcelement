@@ -13,11 +13,12 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // 2. Import des routes (Une seule fois chaque !)
 const authRoutes = require('./routes/authRoutes');
 const reportRoutes = require('./routes/reportRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 // 3. Activation des routes
 app.use('/api/auth', authRoutes);
 app.use('/api/reports', reportRoutes);
-
+app.use('/api/admin', adminRoutes);
 // 4. Lancement du serveur
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

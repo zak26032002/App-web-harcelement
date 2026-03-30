@@ -521,3 +521,18 @@ h5 {
   color: #475569;
   border: 1px solid #e2e8f0;
 }
+
+.admin-nav { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #e2e8f0; }
+.admin-nav button { padding: 1rem 2rem; border: none; background: none; cursor: pointer; font-weight: 600; color: var(--text-light); transition: 0.3s; }
+.admin-nav button.active { color: var(--primary); border-bottom: 3px solid var(--primary); }
+
+.admin-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; }
+.log-tag { background: #1e293b; color: #f8fafc; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-family: monospace; }
+.date-cell { white-space: nowrap; color: var(--text-light); font-size: 0.85rem; }
+.details-cell { font-size: 0.85rem; color: var(--text-dark); }
+.log-header { padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+
+/* Badges rôles */
+.badge.admin { background: #fee2e2; color: #991b1b; }
+.badge.rh { background: #dcfce7; color: #166534; }
+.badge.juriste { background: #e0f2fe; color: #0369a1; }

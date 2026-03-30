@@ -46,15 +46,36 @@ const handleLogin = async () => {
       // LOGIQUE DE REDIRECTION PAR RÔLE [cite: 11-16]
       const role = data.user.role; 
 
-      if (role === 'RH' || role === 'admin' || role === 'Juriste') {
-        // Les RH et Juristes vont vers le tableau de bord complet 
-        console.log("Accès Portail RH/Juriste accordé.");
+     if (data.success) {
+      // 1. Stockage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      
+      // 2. Normalisation ultra-sécurisée : 
+      
+      const role = data.user.role.trim().toLowerCase(); 
+      console.log("Rôle nettoyé :", role);
+
+      // 3. Redirection avec tes valeurs exactes de BDD
+      if (role === 'admin') {
+        console.log("Direction -> Admin");
+        await router.push('/admin');
+      } 
+      else if (role === 'rh' || role === 'juriste') {
+        console.log("Direction -> Dashboard RH/Juriste");
         await router.push('/dashboard');
-      } else {
-        // Les salariés vont vers leur espace personnel (Dépôt/Suivi) 
-        console.log("Accès Espace Salarié accordé.");
+      } 
+      else if (role === 'user') {
+        console.log("Direction -> Espace Salarié");
         await router.push('/mon-espace');
+      } 
+      else {
+        // Si on arrive ici, c'est que la valeur en BDD ne correspond à rien
+        console.error("ERREUR CRITIQUE : Le rôle '" + role + "' n'est pas géré dans le code.");
+        error.value = true;
+        errorMessage.value = "Erreur de profil : rôle inconnu.";
       }
+    }
 
     } else {
       // Cas : Identifiants incorrects
