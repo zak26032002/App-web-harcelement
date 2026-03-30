@@ -56,9 +56,9 @@ const formatStatusLabel = (status: string) => {
   const labels: Record<string, string> = {
     'OUVERT': 'Ouvert',
     'EN_COURS': 'En cours',
-    'EN_ATTENTE_INFO': 'En attente',
-    'CLOS_FONDE': 'Clos (Fondé)',
-    'CLOS_NON_FONDE': 'Clos (Non fondé)'
+    'EN_ATTENTE_INFO': 'En attente d\'infos',
+    'CLOS': 'Clos',
+    
   };
   return labels[status] || status;
 };
@@ -67,7 +67,7 @@ onMounted(fetchReports)
 </script>
 
 <template>
-  <div class="dashboard-container">
+ <div class="dashboard-container">
     <MainHeader />
 
     <main class="page-content">
@@ -102,15 +102,25 @@ onMounted(fetchReports)
         <table>
           <thead>
             <tr>
-              <th>Code Suivi</th> <th>Type</th>
+              <th>Code Suivi</th> 
+              <th>Expéditeur</th> <th>Type</th>
               <th>Description</th>
-              <th>Pièce Jointe</th> <th>Statut</th> <th>Priorité</th>
+              <th>Pièce Jointe</th> 
+              <th>Statut</th> 
+              <th>Priorité</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="item in filteredReports" :key="item.id">
               <td><code class="tracking-code">{{ item.code_suivi }}</code></td>
+              
+              <td>
+                <span :style="item.auteur === 'Anonyme' ? 'color: #94a3b8; font-style: italic;' : 'font-weight: 600; color: #1e293b;'">
+                  {{ item.auteur }}
+                </span>
+              </td>
+
               <td><strong>{{ item.type }}</strong></td>
               <td class="description-cell">{{ item.description }}</td>
               <td>
@@ -125,15 +135,18 @@ onMounted(fetchReports)
                 </span>
               </td>
               <td>
-                <span :class="['badge', 'priority-' + item.priorite?.toLowerCase()]">{{ item.priorite }}</span>
+                <span :class="['badge', 'priority-' + (item.priorite ? item.priorite.toLowerCase() : 'basse')]">
+                  {{ item.priorite }}
+                </span>
               </td>
               <td>
-                <router-link :to="'/report/' + item.id" class="btn-action"> Traiter </router-link></td>
+                <router-link :to="'/report/' + item.id" class="btn-action"> Traiter </router-link>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
     </main>
-  </div>
+</div>
   <Footer/>
 </template>

@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 // Récupérer tous les utilisateurs
 exports.getAllUsers = async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT id, nom, email, role, date_creation FROM users ORDER BY date_creation DESC');
+    const [rows] = await db.query('SELECT id, nom, email, role, date_creation, actif FROM users ORDER BY date_creation DESC');
     res.json({ success: true, data: rows });
   } catch (error) {
     console.error("Erreur SQL getAllUsers :", error.message);
@@ -31,6 +31,38 @@ exports.createUser = async (req, res) => {
     res.json({ success: true, message: "Utilisateur créé avec succès" });
   } catch (error) {
     console.error("Erreur SQL createUser :", error.message);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// 1. Supprimer un utilisateur
+exports.deleteUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.query('DELETE FROM users WHERE id = ?', [id]);
+    
+    await db.query('INSERT INTO logs (action, details) VALUES (?, ?)', 
+      ['ADMIN_DELETE_USER', `Suppression définitive de l'utilisateur ID: ${id}`]);
+
+    res.json({ success: true, message: "Utilisateur supprimé" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// 2. Activer/Désactiver un compte (Toggle)
+exports.toggleUserStatus = async (req, res) => {
+  const { id } = req.params;
+  const { actif } = req.body; // On envoie le nouvel état (0 ou 1)
+  try {
+    await db.query('UPDATE users SET actif = ? WHERE id = ?', [actif, id]);
+    
+    const actionLabel = actif ? 'ACTIVATION' : 'DESACTIVATION';
+    await db.query('INSERT INTO logs (action, details) VALUES (?, ?)', 
+      [`ADMIN_${actionLabel}`, `Changement de statut pour l'utilisateur ID: ${id}`]);
+
+    res.json({ success: true, message: "Statut mis à jour" });
+  } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };

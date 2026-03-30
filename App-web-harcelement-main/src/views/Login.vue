@@ -52,7 +52,7 @@ const handleLogin = async () => {
       localStorage.setItem('user', JSON.stringify(data.user));
       
       // 2. Normalisation ultra-sécurisée : 
-      
+    
       const role = data.user.role.trim().toLowerCase(); 
       console.log("Rôle nettoyé :", role);
 
@@ -76,6 +76,7 @@ const handleLogin = async () => {
         errorMessage.value = "Erreur de profil : rôle inconnu.";
       }
     }
+    
 
     } else {
       // Cas : Identifiants incorrects

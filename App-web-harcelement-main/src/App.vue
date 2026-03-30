@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="$route.path !== '/'"> <RouterLink to="/dashboard">Tableau de bord</RouterLink>
+  <nav v-if="$route.path !== '/'"> 
   </nav>
 
   <RouterView />

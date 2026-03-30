@@ -38,6 +38,24 @@ const handleCreateUser = async () => {
     fetchData()
   }
 }
+  const toggleStatus = async (user: any) => {
+    const newStatus = user.actif ? 0 : 1;
+    const res = await fetch(`http://localhost:3000/api/admin/users/${user.id}/status`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ actif: newStatus })
+    });
+    if (res.ok) fetchData(); // On rafraîchit la liste
+  };
+
+  const confirmDelete = async (id: number) => {
+    if (confirm("Es-tu sûr de vouloir supprimer définitivement ce compte ?")) {
+      const res = await fetch(`http://localhost:3000/api/admin/users/${id}`, {
+        method: 'DELETE'
+      });
+      if (res.ok) fetchData();
+    }
+  };
 
 onMounted(fetchData)
 </script>
@@ -58,11 +76,11 @@ onMounted(fetchData)
           <form @submit.prevent="handleCreateUser" class="form-grid">
             <div class="form-group">
               <label>Nom</label>
-              <input v-model="newUser.nom" type="text" required placeholder="Jean Dupont">
+              <input v-model="newUser.nom" type="text" required placeholder="Nom complet">
             </div>
             <div class="form-group">
               <label>Email</label>
-              <input v-model="newUser.email" type="email" required placeholder="jean@entreprise.fr">
+              <input v-model="newUser.email" type="email" required placeholder="test@entreprise.fr">
             </div>
             <div class="form-group">
               <label>Mot de passe</label>
@@ -92,12 +110,20 @@ onMounted(fetchData)
               </tr>
             </thead>
             <tbody>
-              <tr v-for="u in users" :key="u.id">
-                <td><strong>{{ u.nom }}</strong></td>
-                <td>{{ u.email }}</td>
-                <td><span :class="['badge', u.role.toLowerCase()]">{{ u.role }}</span></td>
-                <td>{{ new Date(u.date_creation).toLocaleDateString() }}</td>
-              </tr>
+              
+              <tr v-for="u in users" :key="u.id" :class="{ 'user-disabled': !u.actif }">
+              <td><strong>{{ u.nom }}</strong></td>
+              <td>{{ u.email }}</td>
+              <td><span :class="['badge', u.role.toLowerCase()]">{{ u.role }}</span></td>
+              <td class="actions">
+                <button @click="toggleStatus(u)" :class="u.actif ? 'btn-warn' : 'btn-success'">
+                  {{ u.actif ?  'Désactiver' : 'Activer' }}
+                </button>
+                
+                <button @click="confirmDelete(u.id)" class="btn-danger">Supprimer</button>
+              </td>
+            </tr>
+              
             </tbody>
           </table>
         </section>

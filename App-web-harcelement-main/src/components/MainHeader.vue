@@ -3,59 +3,63 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const user = ref<any>(null)
 
-// On crée une variable réactive pour stocker l'utilisateur
-// Par défaut, on met des valeurs vides pour éviter les erreurs d'affichage
-const user = ref({
-  nom: 'Invité',
-  role: 'Utilisateur',
-  email: ''
-})
-
-// Cette fonction s'exécute dès que le composant est affiché à l'écran
 onMounted(() => {
-  const storedUser = localStorage.getItem('user')
-  
-  if (storedUser) {
-    // On transforme le texte JSON du localStorage en objet JavaScript
-    user.value = JSON.parse(storedUser)
-    console.log("Utilisateur connecté affiché :", user.value.nom)
-  } else {
-    // Si pas d'utilisateur, on renvoie vers le login par sécurité
-    router.push('/login')
+  const savedUser = localStorage.getItem('user')
+  if (savedUser) {
+    user.value = JSON.parse(savedUser)
   }
 })
 
-// Fonction pour se déconnecter
 const handleLogout = () => {
-  localStorage.removeItem('user') // On vide la session
-  router.push('/login')           // On repart au login
+  localStorage.clear()
+  router.push('/login')
 }
 </script>
 
 <template>
   <header class="main-header">
     <div class="header-left">
-      <span class="app-logo">LegalTech</span>
+      <div class="app-logo" @click="router.push('/')" style="cursor: pointer;">
+        Legal<b>Tech</b>
+      </div>
+      
       <nav class="top-nav">
-        <RouterLink to="/dashboard" class="nav-link">Tableau de bord</RouterLink>
-        <button @click="handleLogout" class="btn-logout">
-        Déconnexion
-      </button>
+        <router-link to="/mon-espace" class="nav-link">Mon Espace</router-link>
+
+        <router-link 
+          v-if="user && (user.role.toLowerCase() === 'rh' || user.role.toLowerCase() === 'juriste')" 
+          to="/dashboard" 
+          class="nav-link"
+        >
+          Tableau de bord
+        </router-link>
+
+        <router-link 
+          v-if="user && user.role.toLowerCase() === 'admin'" 
+          to="/admin" 
+          class="nav-link"
+        >
+          Administration
+        </router-link>
       </nav>
     </div>
-    
 
-    <div class="user-profile">
-      <div class="user-details">
-        <span class="user-name">{{ user.nom }}</span>
-        <span class="user-role">{{ user.role }}</span>
+    <div class="header-right">
+      <div class="user-profile">
+        <div v-if="user" class="user-details">
+          <span class="user-name">{{ user.nom }}</span>
+          <span class="user-role">{{ user.role }}</span>
+        </div>
+        <button @click="handleLogout" class="btn-logout">
+          Déconnexion
+        </button>
       </div>
     </div>
   </header>
 </template>
 
 <style scoped>
-
 
 </style>
